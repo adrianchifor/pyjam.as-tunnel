@@ -124,7 +124,8 @@ class WireguardServerInterface:
 
     def reload_interface(self) -> None:
         p = subprocess.run(
-            f"wg addconf {self.name} <(wg-quick strip {self.name})", shell=True
+            f"/bin/bash -c 'wg addconf {self.name} <(wg-quick strip {self.name})'",
+            shell=True,
         )
         if p.returncode != 0:
             raise ChildProcessError("Failed to reload interface")
