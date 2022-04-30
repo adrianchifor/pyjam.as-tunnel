@@ -130,8 +130,6 @@ class WireguardServerInterface:
                 SaveConfig = true
                 ListenPort = {self.port}
                 PrivateKey = {self.private_key}
-                PostUp = iptables -A FORWARD -i %i -j ACCEPT; iptables -t nat -A POSTROUTING -o ens12 -j MASQUERADE
-                PostDown = iptables -D FORWARD -i %i -j ACCEPT; iptables -t nat -D POSTROUTING -o ens12 -j MASQUERADE
                 """
             )
             + "\n".join(peer_configs)
