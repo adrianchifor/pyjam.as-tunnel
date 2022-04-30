@@ -128,7 +128,7 @@ class WireguardServerInterface:
             textwrap.dedent(
                 f"""
                 [Interface]
-                Address = {self.network.with_prefixlen}
+                Address = {self.ip}/32
                 ListenPort = {self.port}
                 PrivateKey = {self.private_key}
                 """
