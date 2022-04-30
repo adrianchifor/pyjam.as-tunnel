@@ -42,7 +42,7 @@ def _gen_private_wg_key() -> str:
 def _gen_public_wg_key(private_key: str) -> str:
     """Generate a public Wireguard key from a private key."""
     p = subprocess.Popen(
-        ["wg", "genkey"], stdout=subprocess.PIPE, stdin=subprocess.PIPE
+        ["wg", "pubkey"], stdout=subprocess.PIPE, stdin=subprocess.PIPE
     )
     out, _ = p.communicate(input=private_key.encode())
     return out.decode().strip()
