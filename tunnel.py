@@ -15,6 +15,8 @@ import random
 import string
 import subprocess
 import textwrap
+from types import TracebackType
+from typing import Optional, Type
 
 from flask import Flask
 import requests
@@ -151,7 +153,12 @@ class WireguardServerInterface:
     def __enter__(self) -> None:
         pass
 
-    def __exit__(self, exc_type, exc_value, exc_traceback) -> None:
+    def __exit__(
+        self,
+        exc_type: Optional[Type[BaseException]],
+        exc_val: Optional[BaseException],
+        exc_tb: Optional[TracebackType],
+    ) -> None:
         self.write()
         self.reload_interface()
 
