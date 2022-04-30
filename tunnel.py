@@ -37,23 +37,29 @@ def _gen_private_wg_key() -> str:
     return p.stdout.decode().strip()
 
 
+def _gen_public_wg_key(private_key: str) -> str:
+    """Generate a public Wireguard key from a private key."""
+    p = subprocess.Popen(
+        ["wg", "genkey"], stdout=subprocess.PIPE, stdin=subprocess.PIPE
+    )
+    out, _ = p.communicate(input=private_key.encode())
+    return out.decode().strip()
+
+
 class Client:
     def __init__(self, vpn_ip: IPv4Address, port: int, slug: str):
         self.ip = vpn_ip
         self.port = port
         self.slug = slug
         self.private_key = _gen_private_wg_key()
-
-    @property
-    def public_key(self) -> str:
-        p = subprocess.Popen(
-            ["wg", "genkey"], stdout=subprocess.PIPE, stdin=subprocess.PIPE
-        )
-        out, _ = p.communicate(input=self.private_key.encode())
-        return out.decode().strip()
+        self.public_key = _gen_public_wg_key(self.private_key)
 
     def config(
-        self, server_hostname: str, server_ip: IPv4Address, server_wg_port: int
+        self,
+        server_hostname: str,
+        server_ip: IPv4Address,
+        server_wg_port: int,
+        server_wg_public_key: str,
     ) -> str:
         return textwrap.dedent(
             f"""
@@ -62,7 +68,7 @@ class Client:
             PrivateKey = {self.private_key}
 
             [Peer]
-            PublicKey = {self.public_key}
+            PublicKey = {server_wg_public_key}
             AllowedIPs = {server_ip}/32
             Endpoint = {server_hostname}:{server_wg_port}
             PersistentKeepalive = 21
@@ -88,6 +94,7 @@ class WireguardServerInterface:
 
         self.peers: list[Client] = []
         self.private_key = _gen_private_wg_key()
+        self.public_key = _gen_public_wg_key(self.private_key)
         self._file_handle = open(self.full_path, "w+")
         self.hosts = network.hosts()
         self.ip = self.next_ip()
@@ -206,4 +213,4 @@ def new_tunnel(port: int) -> str:
 
     update_reverse_proxy(HOSTNAME, CADDY_HOSTNAME, client)
 
-    return client.config(HOSTNAME, wg.ip, wg.port)
+    return client.config(HOSTNAME, wg.ip, wg.port, wg.public_key)
