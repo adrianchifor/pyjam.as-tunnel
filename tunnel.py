@@ -127,7 +127,6 @@ class WireguardServerInterface:
                 f"""
                 [Interface]
                 Address = {self.network.with_prefixlen}
-                SaveConfig = true
                 ListenPort = {self.port}
                 PrivateKey = {self.private_key}
                 """
