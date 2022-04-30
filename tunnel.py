@@ -69,6 +69,16 @@ class Client:
         """
         )
 
+    @property
+    def server_side_config(self) -> str:
+        return textwrap.dedent(
+            f"""
+            [Peer]
+            PublicKey = {self.public_key}
+            AllowedIPs = {self.ip}/32
+            """
+        )
+
 
 class WireguardServerInterface:
     def __init__(self, name: str, network: IPv4Network, port: int):
@@ -103,17 +113,21 @@ class WireguardServerInterface:
             raise ChildProcessError("Failed to `up` interface")
 
     def _generate_config(self) -> str:
-        # TODO: add peers here
-        return textwrap.dedent(
-            f"""
-            [Interface]
-            Address = {self.network.with_prefixlen}
-            SaveConfig = true
-            ListenPort = {self.port}
-            PrivateKey = {self.private_key}
-            PostUp = iptables -A FORWARD -i %i -j ACCEPT; iptables -t nat -A POSTROUTING -o ens12 -j MASQUERADE
-            PostDown = iptables -D FORWARD -i %i -j ACCEPT; iptables -t nat -D POSTROUTING -o ens12 -j MASQUERADE
-        """
+        peer_configs = [peer.server_side_config for peer in self.peers]
+
+        return (
+            textwrap.dedent(
+                f"""
+                [Interface]
+                Address = {self.network.with_prefixlen}
+                SaveConfig = true
+                ListenPort = {self.port}
+                PrivateKey = {self.private_key}
+                PostUp = iptables -A FORWARD -i %i -j ACCEPT; iptables -t nat -A POSTROUTING -o ens12 -j MASQUERADE
+                PostDown = iptables -D FORWARD -i %i -j ACCEPT; iptables -t nat -D POSTROUTING -o ens12 -j MASQUERADE
+                """
+            )
+            + "\n".join(peer_configs)
         )
 
     def write(self) -> None:
