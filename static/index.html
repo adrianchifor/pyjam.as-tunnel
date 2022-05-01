@@ -17,10 +17,13 @@
   <p>
     SSL-terminated, ephemeral HTTP tunnels to your local machine
     <br />
-    — no custom software required, thanks to <a href="https://www.wireguard.com/install/">Wireguard</a>
+    — no custom software required, thanks to <a style="color: #ed1ae3" href="https://www.wireguard.com/install/">Wireguard</a>
   </p>
-  <p style="margin-top: 50px;">
+  <p style="margin-top: 50px; margin-bottom: 5px;">
     To start a tunnel for your local service on port 8080
+  </p>
+  <p style="font-size: 18px; color: #8d0083; margin-top: 0px">
+    # Remember to bind your local service to 0.0.0.0
   </p>
   <div style="background-color: #0f0f0f; border-radius: 10px;">
     <div style="padding: 10px; display: block;">
@@ -37,10 +40,6 @@
       $ wg-quick down ./tunnel.conf
     </div>
   </div>
-  <br>
-  <p style="margin-top: 30">
-    Remember to bind your local service to 0.0.0.0
-  </p>
   <br>
   <br>
   <a style="margin-top: 30px; color: #ed1ae3;"
