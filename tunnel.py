@@ -11,6 +11,7 @@
 
 
 # TODO: can we use IPv6?
+import atexit
 import os
 import random
 import string
@@ -116,6 +117,7 @@ class WireguardServerInterface:
 
         self.write()
         self._up()
+        atexit.register(self._down)
 
     @property
     def full_path(self) -> str:
@@ -133,6 +135,12 @@ class WireguardServerInterface:
         p = subprocess.run(["wg-quick", "up", self.name])
         if p.returncode != 0:
             raise ChildProcessError("Failed to `up` interface")
+
+    def _down(self) -> None:
+        """Stop the servers Wireguard interface."""
+        p = subprocess.run(["wg-quick", "down", self.name])
+        if p.returncode != 0:
+            raise ChildProcessError("Failed to `down` interface")
 
     def _generate_config(self) -> str:
         peer_configs = [peer.server_side_config for peer in self.peers]
