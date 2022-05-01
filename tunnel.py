@@ -22,7 +22,7 @@ from ipaddress import IPv4Address, IPv4Network
 from types import TracebackType
 from typing import Optional, Type
 
-from flask import Flask
+from flask import Flask, Response
 
 import requests
 
@@ -249,6 +249,11 @@ app = Flask(__name__)
 @app.before_first_request
 def init() -> None:
     init_reverse_proxy(CADDY_HOSTNAME)
+
+
+@app.route("/")
+def index() -> Response:
+    return app.send_static_file("index.html")
 
 
 @app.route("/<int:port>")
