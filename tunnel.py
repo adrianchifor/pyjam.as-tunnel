@@ -14,7 +14,6 @@
 import atexit
 import os
 import random
-import string
 import subprocess
 import sys
 import textwrap
@@ -27,7 +26,7 @@ from flask import Flask, Response
 import requests
 
 
-SLUG_ALPHABET: str = string.ascii_lowercase + string.digits
+SLUG_ALPHABET: str = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
 
 HOSTNAME = os.getenv("TUNNEL_HOSTNAME", "tunnel.pyjam.as")
 CADDY_HOSTNAME = os.getenv("TUNNEL_CADDY_HOSTNAME", "localhost")
