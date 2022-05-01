@@ -127,8 +127,6 @@ class WireguardServerInterface:
 
     def add_peer(self, peer: Client) -> None:
         self.peers.append(peer)
-        self.write()
-        self.reload_interface()
 
     def _up(self) -> None:
         """Start the servers Wireguard interface."""
