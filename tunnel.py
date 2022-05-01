@@ -29,6 +29,7 @@ import requests
 SLUG_ALPHABET: str = string.ascii_lowercase + string.digits
 
 HOSTNAME = os.getenv("TUNNEL_HOSTNAME", "tunnel.pyjam.as")
+PORT = int(os.getenv("TUNNEL_APP_PORT", "5000"))
 CADDY_HOSTNAME = os.getenv("TUNNEL_CADDY_HOSTNAME", "localhost")
 WG_NAME = os.getenv("TUNNEL_WG_INTERFACE_NAME", HOSTNAME)
 if len(WG_NAME) > 15:
@@ -174,10 +175,43 @@ class WireguardServerInterface:
         self.reload_interface()
 
 
-def init_reverse_proxy(caddy_hostname: str) -> None:
+def init_reverse_proxy(caddy_hostname: str, app_hostname: str, app_port: int) -> None:
     """Initialise Caddy."""
     payload = {
-        "apps": {"http": {"servers": {"srv0": {"listen": [":80"], "routes": []}}}}
+        "apps": {
+            "http": {
+                "servers": {
+                    "srv0": {
+                        "listen": [":80"],
+                        "routes": [
+                            {
+                                "handle": [
+                                    {
+                                        "handler": "subroute",
+                                        "routes": [
+                                            {
+                                                "handle": [
+                                                    {
+                                                        "handler": "reverse_proxy",
+                                                        "upstreams": [
+                                                            {
+                                                                "dial": f"127.0.0.1:{app_port}"
+                                                            }
+                                                        ],
+                                                    }
+                                                ]
+                                            }
+                                        ],
+                                    }
+                                ],
+                                "match": [{"host": [app_hostname]}],
+                                "terminal": True,
+                            },
+                        ],
+                    }
+                }
+            }
+        }
     }
     r = requests.post(
         f"http://{caddy_hostname}:2019/load",
@@ -227,7 +261,7 @@ app = Flask(__name__)
 
 @app.before_first_request
 def init() -> None:
-    init_reverse_proxy(CADDY_HOSTNAME)
+    init_reverse_proxy(CADDY_HOSTNAME, HOSTNAME, PORT)
 
 
 @app.route("/<int:port>")
