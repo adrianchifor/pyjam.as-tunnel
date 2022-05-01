@@ -5,6 +5,8 @@
     tunnel.pyjam.as provides an SSL-terminated, ephemeral HTTP tunnel to a
     machine on your local network without any custom software on your machine
     thanks to Wireguard.
+
+    Copyright (C) 2022 Carl Bordum Hansen
 """
 
 
