@@ -10,6 +10,22 @@ something cool you've built.
 thanks to the magic of Wireguard.
 
 
+## Usage
+
+To start a tunnel for your local service on port 8080
+> Remember to bind your local service to 0.0.0.0
+
+```
+curl https://tunnel.pyjam.as/8080 > tunnel.conf && wg-quick up ./tunnel.conf
+```
+
+To stop your tunnel
+
+```
+wg-quick down ./tunnel.conf
+```
+
+
 ## Self-hosting
 
 Requirements: `python >= 3.9`, `poetry`, `wireguard`, `caddy`.
