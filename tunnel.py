@@ -226,9 +226,9 @@ def update_reverse_proxy(
     r.raise_for_status()
 
 
-def make_slug(length: int = 8) -> str:
+def make_slug(alphabet: str = SLUG_ALPHABET, length: int = 8) -> str:
     """Generate a slug usable as a subdomain and interface name."""
-    return "".join(random.choices(SLUG_ALPHABET, k=length))
+    return "".join(random.choices(alphabet, k=length))
 
 
 wg = WireguardServerInterface(WG_NAME, WG_NETWORK, WG_PORT)
