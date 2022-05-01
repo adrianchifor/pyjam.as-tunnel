@@ -11,6 +11,7 @@
 # TODO: can we use IPv6?
 from ipaddress import IPv4Address, IPv4Network
 import os
+import sys
 import random
 import string
 import subprocess
@@ -27,6 +28,13 @@ SLUG_ALPHABET: str = string.ascii_lowercase + string.digits
 HOSTNAME = os.getenv("TUNNEL_HOSTNAME", "tunnel.pyjam.as")
 CADDY_HOSTNAME = os.getenv("TUNNEL_CADDY_HOSTNAME", "localhost")
 WG_NAME = os.getenv("TUNNEL_WG_INTERFACE_NAME", HOSTNAME)
+if len(WG_NAME) > 15:
+    print(
+        f'Wireguard interface name "{WG_NAME}" is too long (>15 chars). Overwrite by setting TUNNEL_WG_INTERFACE_NAME',
+        sys.stderr,
+    )
+    sys.exit(1)
+
 WG_NETWORK = IPv4Network(os.getenv("TUNNEL_WG_NETWORK", "10.101.10.0/24"))
 WG_PORT = int(os.getenv("TUNNEL_WG_PORT", "54321"))
 
