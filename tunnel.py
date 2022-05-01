@@ -26,7 +26,7 @@ SLUG_ALPHABET: str = string.ascii_lowercase + string.digits
 
 HOSTNAME = os.getenv("TUNNEL_HOSTNAME", "tunnel.pyjam.as")
 CADDY_HOSTNAME = os.getenv("TUNNEL_CADDY_HOSTNAME", "localhost")
-WG_NAME = HOSTNAME
+WG_NAME = os.getenv("TUNNEL_WG_INTERFACE_NAME", HOSTNAME)
 WG_NETWORK = IPv4Network(os.getenv("TUNNEL_WG_NETWORK", "10.101.10.0/24"))
 WG_PORT = int(os.getenv("TUNNEL_WG_PORT", "54321"))
 
