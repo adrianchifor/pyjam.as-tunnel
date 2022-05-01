@@ -163,6 +163,18 @@ class WireguardServerInterface:
         self.reload_interface()
 
 
+def init_reverse_proxy(caddy_hostname: str) -> None:
+    """Initialise Caddy."""
+    payload = {
+        "apps": {"http": {"servers": {"srv0": {"listen": [":80"], "routes": []}}}}
+    }
+    r = requests.post(
+        f"http://{caddy_hostname}:2019/load",
+        json=payload,
+    )
+    r.raise_for_status()
+
+
 def update_reverse_proxy(
     server_hostname: str, caddy_hostname: str, client: Client
 ) -> None:
@@ -200,6 +212,11 @@ def make_slug(length: int = 8) -> str:
 
 wg = WireguardServerInterface(WG_NAME, WG_NETWORK, WG_PORT)
 app = Flask(__name__)
+
+
+@app.before_first_request
+def init() -> None:
+    init_reverse_proxy(CADDY_HOSTNAME)
 
 
 @app.route("/<int:port>")
