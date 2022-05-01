@@ -9,17 +9,18 @@
 
 
 # TODO: can we use IPv6?
-from ipaddress import IPv4Address, IPv4Network
 import os
-import sys
 import random
 import string
 import subprocess
+import sys
 import textwrap
+from ipaddress import IPv4Address, IPv4Network
 from types import TracebackType
 from typing import Optional, Type
 
 from flask import Flask
+
 import requests
 
 
