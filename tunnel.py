@@ -26,7 +26,7 @@ from flask import Flask, Response
 import requests
 
 
-SLUG_ALPHABET: str = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
+SLUG_ALPHABET: str = "123456789abcdefghijkmnopqrstuvwxyz"
 
 HOSTNAME = os.getenv("TUNNEL_HOSTNAME", "tunnel.pyjam.as")
 CADDY_HOSTNAME = os.getenv("TUNNEL_CADDY_HOSTNAME", "localhost")
