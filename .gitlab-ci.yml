@@ -10,5 +10,5 @@ Lint Python:
   script:
     - poetry run black --check .
     - poetry run flake8 --version
-    - poetry run flake8 --max-line-length 100
+    - poetry run flake8 --max-line-length 1337
     - poetry run mypy --strict tunnel.py
