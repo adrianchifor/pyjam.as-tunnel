@@ -68,6 +68,7 @@ class Client:
         self.slug = slug
         self.private_key = _gen_private_wg_key()
         self.public_key = _gen_public_wg_key(self.private_key)
+        self._update_route_rules()
 
     def config(
         self,
@@ -100,6 +101,16 @@ class Client:
             AllowedIPs = {self.ip}/32
             """
         )
+
+    @property
+    def ip_route_cmd(self) -> list[str]:
+        return ["ip", "route", "add", f"{self.ip}/32", "dev", "tunnel"]
+
+    def _update_route_rules(self) -> None:
+        """Update routing/firewall rules."""
+        p = subprocess.run(self.ip_route_cmd)
+        if p.returncode != 0:
+            raise ChildProcessError(f"Failed to update routing rules for {self.ip}")
 
 
 class WireguardServerInterface:
