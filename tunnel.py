@@ -236,7 +236,7 @@ def update_reverse_proxy(
     r.raise_for_status()
 
 
-def make_slug(alphabet: str = SLUG_ALPHABET, length: int = 8) -> str:
+def make_slug(alphabet: str = SLUG_ALPHABET, length: int = 6) -> str:
     """Generate a slug usable as a subdomain and interface name."""
     return "".join(random.choices(alphabet, k=length))
 
