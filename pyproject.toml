@@ -2,7 +2,10 @@
 name = "tunnel.pyjam.as"
 version = "0.1.0"
 description = ""
-authors = ["Carl Bordum Hansen <carl@bordum.dk>"]
+authors = [
+  "Asbjørn Kofoed-Nielsen <asbjorn.ko.ni@gmail.com>",
+  "Carl Bordum Hansen <carl@bordum.dk>",
+]
 
 [tool.poetry.dependencies]
 python = "^3.9"
