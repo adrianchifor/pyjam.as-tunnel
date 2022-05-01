@@ -60,9 +60,10 @@ def _gen_public_wg_key(private_key: str) -> str:
 
 
 class Client:
-    def __init__(self, vpn_ip: IPv4Address, port: int, slug: str):
+    def __init__(self, vpn_ip: IPv4Address, port: int, hostname: str, slug: str):
         self.ip = vpn_ip
         self.port = port
+        self.hostname = hostname
         self.slug = slug
         self.private_key = _gen_private_wg_key()
         self.public_key = _gen_public_wg_key(self.private_key)
@@ -79,6 +80,7 @@ class Client:
             [Interface]
             Address = {self.ip}/32
             PrivateKey = {self.private_key}
+            PostUp = printf 'You can now access http://0.0.0.0:{self.port} on https://{self.slug}.{self.hostname}/'
 
             [Peer]
             PublicKey = {server_wg_public_key}
@@ -238,7 +240,7 @@ def new_tunnel(port: int) -> str:
     """
     slug = make_slug()
 
-    client = Client(wg.next_ip(), port, slug)
+    client = Client(wg.next_ip(), port, HOSTNAME, slug)
 
     with wg:
         wg.add_peer(client)
