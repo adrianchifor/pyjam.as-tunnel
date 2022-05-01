@@ -80,7 +80,7 @@ class Client:
             [Interface]
             Address = {self.ip}/32
             PrivateKey = {self.private_key}
-            PostUp = printf 'You can now access http://0.0.0.0:{self.port} on https://{self.slug}.{self.hostname}/\n'
+            PostUp = printf 'You can now access http://0.0.0.0:{self.port} on https://{self.slug}.{self.hostname}/ ✨\n'
 
             [Peer]
             PublicKey = {server_wg_public_key}
