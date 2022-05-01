@@ -38,7 +38,7 @@ if len(WG_NAME) > 15:
     )
     sys.exit(1)
 
-WG_NETWORK = IPv4Network(os.getenv("TUNNEL_WG_NETWORK", "10.101.10.0/24"))
+WG_NETWORK = IPv4Network(os.getenv("TUNNEL_WG_NETWORK", "10.101.0.0/16"))
 WG_PORT = int(os.getenv("TUNNEL_WG_PORT", "54321"))
 
 
