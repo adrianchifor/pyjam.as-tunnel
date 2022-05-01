@@ -1,1 +1,62 @@
-<h1>Hello world!</h1>
+<head>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono&display=swap"
+    rel="stylesheet"
+  />
+</head>
+<body style="background-color: #1f1f1f;">
+  <header
+    style="
+      font-size: 70px;
+      color: white;
+      text-align: center;
+      margin-top: 20px;
+      color: #fcc7fb;
+    "
+  >
+    tunnel.pyjam.as
+  </header>
+  <p>
+    SSL-terminated, ephemeral HTTP tunnels to a machine on your local network
+    <br />
+    without any custom software on your machine thanks to Wireguard.
+  </p>
+  <p style="margin-top: 50px;">
+    To start a tunnel for your local service on port 8080
+  </p>
+  <div style="background-color: #0f0f0f; border-radius: 10px;">
+    <div style="padding: 10px; display: block;">
+      $ curl https://tunnel.publickey.sh/8080 > tunnel.conf && wg-quick up
+      ./tunnel.conf
+    </div>
+  </div>
+  <br />
+  <p style="margin-top: 30">
+    To stop your tunnel
+  </p>
+  <div
+    style="background-color: #0f0f0f; border-radius: 10px;"
+  >
+    <div style="padding: 10px; display: block;">
+      $ wg-quick down ./tunnel.conf
+    </div>
+  </div>
+  <br>
+  <br>
+  <a style="margin-top: 30px; color: #ed1ae3;" href="https://gitlab.com/pyjam.as/publickey.sh"
+    >https://gitlab.com/pyjam.as/tunnel</a
+  >
+</body>
+<style>
+  :root {
+    font-family: "Ubuntu Mono", monospace;
+    font-size: 20px;
+    text-align: center;
+    color: white;
+  }
+  div {
+    display: inline-block;
+  }
+</style>
